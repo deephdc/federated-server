@@ -28,7 +28,7 @@ Federated server.
 ## 🚀 Getting started
 
 1. Deploy a federated server using the [AI4EOSC dashboard](https://dashboard.cloud.ai4eosc.eu/marketplace) (this is a tool inside the marketplace).
-    * _General configuration:_ Give a name and description to the deployment. In service to run select `JupyterLab` or `VSCode` if you need to start/stop the process and update the server configuration once started. If you only need to monitor the process you can run `fedserver`. Generated as many `federated secrets` for authenticating the clients with the server as needed (label them so that you can revoke them if necessary).
+    * _General configuration:_ Give a name and description to the deployment. In service to run select `JupyterLab` or `VSCode` if you need to start/stop the process and update the server configuration once started. If you only need to monitor the process you can run `fedserver`. Generate as many `federated secrets` for authenticating the clients with the server as needed (label them so that you can revoke them if necessary).
     * _Hardware configuration:_ Select the number of CPUs you want, the GB of RAM and disk. Remember that you are deploying the server, which will not run ML/DL models.
     * _Federated configuration:_ Set the number of rounds of the federated learning scheme, the minimum number of clients, the aggregation function, and the error/precision measurement metric (e.g. accuracy).
 2. Once you have deployed the federated server, it will appear in your deployment list as a tool. In the tool's information, you can get the `Deployment ID` (uuid).
