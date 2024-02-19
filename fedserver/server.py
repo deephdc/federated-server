@@ -6,6 +6,7 @@ FEDERATED_ROUNDS: int = int(os.environ['FEDERATED_ROUNDS'])
 FEDERATED_METRIC = os.environ['FEDERATED_METRIC']
 FEDERATED_MIN_CLIENTS: int = int(os.environ['FEDERATED_MIN_CLIENTS'])
 FEDERATED_STRATEGY: str = os.environ['FEDERATED_STRATEGY']
+# VAULT_TOKEN: str = os.environ['VAULT_TOKEN']
 
 
 # Weighted average of the metric:
@@ -60,9 +61,20 @@ elif FEDERATED_STRATEGY == "Adaptive Federated Optimization using Yogi":
         evaluate_metrics_aggregation_fn=wavg_metric,
     )
 
+# Include token interceptor
+token_interceptor = ai4flwr.auth.vault.VaultBearerTokenInterceptor(
+    vault_mountpoint="/secrets/",
+    secret_path="federated")
+
 # Flower server:
 fl.server.start_server(
     server_address="0.0.0.0:5000",
     config=fl.server.ServerConfig(num_rounds=FEDERATED_ROUNDS),
     strategy=strategy,
+    certificates=(
+        pathlib.Path("fedserver", ".cache", "certificates", "ca.crt").read_bytes(),
+        pathlib.Path("fedserver", ".cache", "certificates", "server.pem").read_bytes(),
+        pathlib.Path("fedserver", ".cache", "certificates", "server.key").read_bytes(),
+    ),
+    interceptors=[token_interceptor]
 )
