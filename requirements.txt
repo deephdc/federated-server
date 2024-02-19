@@ -1,2 +1,2 @@
 flwr @ git+https://github.com/AI4EOSC/flower@ai4eosc/credentials
-ai4flwr @ git+https://github.com/ai4os/ai4-flwr.git
+ai4flwr @ git+https://github.com/ai4os/ai4-flwr
