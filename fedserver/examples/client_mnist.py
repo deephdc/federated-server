@@ -13,12 +13,6 @@ from tensorflow.keras.utils import to_categorical
 
 import ai4flwr.auth.bearer
 
-# Check if Token is provided in cmdline
-#if len(sys.argv) != 2:
-#    print("Error: No token provided!!!")
-#    print(f"Usage: {sys.argv[0]} <token>")
-#    sys.exit(1)
-
 token = "1234"
 
 # Load and process MNIST data
@@ -53,9 +47,6 @@ model.compile(loss='categorical_crossentropy',
               metrics=['accuracy'])
 model.summary()
 
-# Flower and auth configuration
-
-
 # Flower client
 class Client(fl.client.NumPyClient):
     def get_parameters(self, config):
@@ -73,7 +64,6 @@ class Client(fl.client.NumPyClient):
 
 
 auth_plugin = ai4flwr.auth.bearer.BearerTokenAuthPlugin(token)
-
 
 fl.client.start_client(
     server_address="localhost:5000",
