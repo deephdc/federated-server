@@ -2,10 +2,10 @@ import os
 import ast
 import flwr as fl
 
-FEDERATED_ROUNDS: int = int(os.environ['FEDERATED_ROUNDS'])
-FEDERATED_METRIC = os.environ['FEDERATED_METRIC']
-FEDERATED_MIN_CLIENTS: int = int(os.environ['FEDERATED_MIN_CLIENTS'])
-FEDERATED_STRATEGY: str = os.environ['FEDERATED_STRATEGY']
+FEDERATED_ROUNDS: int = int(os.environ["FEDERATED_ROUNDS"])
+FEDERATED_METRIC = os.environ["FEDERATED_METRIC"]
+FEDERATED_MIN_CLIENTS: int = int(os.environ["FEDERATED_MIN_CLIENTS"])
+FEDERATED_STRATEGY: str = os.environ["FEDERATED_STRATEGY"]
 # VAULT_TOKEN: str = os.environ['VAULT_TOKEN']
 
 
@@ -63,8 +63,8 @@ elif FEDERATED_STRATEGY == "Adaptive Federated Optimization using Yogi":
 
 # Include token interceptor
 token_interceptor = ai4flwr.auth.vault.VaultBearerTokenInterceptor(
-    vault_mountpoint="/secrets/",
-    secret_path="federated")
+    vault_mountpoint="/secrets/", secret_path="federated"
+)
 
 # Flower server:
 fl.server.start_server(
@@ -76,5 +76,5 @@ fl.server.start_server(
         pathlib.Path("fedserver", ".cache", "certificates", "server.pem").read_bytes(),
         pathlib.Path("fedserver", ".cache", "certificates", "server.key").read_bytes(),
     ),
-    interceptors=[token_interceptor]
+    interceptors=[token_interceptor],
 )

@@ -70,9 +70,15 @@ fl.server.start_server(
     config=fl.server.ServerConfig(num_rounds=FEDERATED_ROUNDS),
     strategy=strategy,
     certificates=(
-        pathlib.Path("fedserver", "examples", ".cache", "certificates", "ca.crt").read_bytes(),
-        pathlib.Path("fedserver", "examples", ".cache", "certificates", "server.pem").read_bytes(),
-        pathlib.Path("fedserver", "examples", ".cache", "certificates", "server.key").read_bytes(),
+        pathlib.Path(
+            "fedserver", "examples", ".cache", "certificates", "ca.crt"
+        ).read_bytes(),
+        pathlib.Path(
+            "fedserver", "examples", ".cache", "certificates", "server.pem"
+        ).read_bytes(),
+        pathlib.Path(
+            "fedserver", "examples", ".cache", "certificates", "server.key"
+        ).read_bytes(),
     ),
-    interceptors=[token_interceptor]
+    interceptors=[token_interceptor],
 )
