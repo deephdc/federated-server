@@ -1,5 +1,6 @@
 import os
 import ast
+import ai4flwr
 import flwr as fl
 
 FEDERATED_ROUNDS: int = int(os.environ["FEDERATED_ROUNDS"])
