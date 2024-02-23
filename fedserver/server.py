@@ -7,6 +7,7 @@ FEDERATED_ROUNDS: int = int(os.environ["FEDERATED_ROUNDS"])
 FEDERATED_METRIC = os.environ["FEDERATED_METRIC"]
 FEDERATED_MIN_CLIENTS: int = int(os.environ["FEDERATED_MIN_CLIENTS"])
 FEDERATED_STRATEGY: str = os.environ["FEDERATED_STRATEGY"]
+UUID: str = os.environ['NOMAD_JOB_NAME'][8:]
 # VAULT_TOKEN: str = os.environ['VAULT_TOKEN']
 
 
@@ -63,8 +64,9 @@ elif FEDERATED_STRATEGY == "Adaptive Federated Optimization using Yogi":
     )
 
 # Include token interceptor
+deployment_root = f"https://ide-{UUID}.deployments.cloud.ai4eosc.eu"
 token_interceptor = ai4flwr.auth.vault.VaultBearerTokenInterceptor(
-    vault_mountpoint="/secrets/", secret_path="federated"
+    vault_mountpoint="/secrets/", secret_path=f"deployments/{deployment_root}/federated"
 )
 
 # Flower server:
