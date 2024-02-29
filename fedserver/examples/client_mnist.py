@@ -1,5 +1,6 @@
 import pathlib
 import sys
+import certifi
 
 import flwr as fl
 from keras.datasets import mnist
@@ -13,7 +14,7 @@ from tensorflow.keras.utils import to_categorical
 
 import ai4flwr.auth.bearer
 
-token = "1234"
+token = "..."  # Token given by the server
 
 # Load and process MNIST data
 (X_train, y_train), (X_test, y_test) = mnist.load_data()
@@ -47,6 +48,7 @@ model.compile(
 )
 model.summary()
 
+
 # Flower client
 class Client(fl.client.NumPyClient):
     def get_parameters(self, config):
@@ -65,11 +67,11 @@ class Client(fl.client.NumPyClient):
 
 auth_plugin = ai4flwr.auth.bearer.BearerTokenAuthPlugin(token)
 
+uuid = "..."  # UUID of the deployment where the server is started
+end_point = f"fedserver-{uuid}.deployments.cloud.ai4eosc.eu"
 fl.client.start_client(
-    server_address="localhost:5000",
-    root_certificates=pathlib.Path(
-        "fedserver", "examples", ".cache", "certificates", "ca.crt"
-    ).read_bytes(),
+    server_address=f"{end_point}:443",
+    root_certificates=pathlib.Path(certifi.where()).read_bytes(),
     client=Client(),
     call_credentials=auth_plugin.call_credentials(),
 )
