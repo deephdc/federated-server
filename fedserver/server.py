@@ -1,14 +1,20 @@
 import os
 import ast
+import logging
 import ai4flwr
 import flwr as fl
+from ai4flwr.auth import vault
+from flwr.common.logger import log
+
+INFO = logging.INFO
 
 FEDERATED_ROUNDS: int = int(os.environ["FEDERATED_ROUNDS"])
 FEDERATED_METRIC = os.environ["FEDERATED_METRIC"]
 FEDERATED_MIN_CLIENTS: int = int(os.environ["FEDERATED_MIN_CLIENTS"])
 FEDERATED_STRATEGY: str = os.environ["FEDERATED_STRATEGY"]
 UUID: str = os.environ['NOMAD_JOB_NAME'][8:]
-# VAULT_TOKEN: str = os.environ['VAULT_TOKEN']
+USER: str = os.environ['NOMAD_META_owner']
+VAULT_TOKEN: str = os.environ['VAULT_TOKEN']
 
 
 # Weighted average of the metric:
@@ -64,20 +70,17 @@ elif FEDERATED_STRATEGY == "Adaptive Federated Optimization using Yogi":
     )
 
 # Include token interceptor
-deployment_root = f"https://ide-{UUID}.deployments.cloud.ai4eosc.eu"
 token_interceptor = ai4flwr.auth.vault.VaultBearerTokenInterceptor(
-    vault_mountpoint="/secrets/", secret_path=f"deployments/{deployment_root}/federated"
+    vault_addr="https://vault.services.fedcloud.eu:8200/", vault_token=VAULT_TOKEN,
+    vault_mountpoint="/secrets/", secret_path=f"users/{USER}/deployments/{UUID}/federated"
 )
+
+log(INFO, 'Token interceptor created')
 
 # Flower server:
 fl.server.start_server(
     server_address="0.0.0.0:5000",
     config=fl.server.ServerConfig(num_rounds=FEDERATED_ROUNDS),
     strategy=strategy,
-    certificates=(
-        pathlib.Path("fedserver", ".cache", "certificates", "ca.crt").read_bytes(),
-        pathlib.Path("fedserver", ".cache", "certificates", "server.pem").read_bytes(),
-        pathlib.Path("fedserver", ".cache", "certificates", "server.key").read_bytes(),
-    ),
     interceptors=[token_interceptor],
 )
