@@ -1,1 +1,5 @@
-ai4flwr @ git+https://github.com/ai4os/ai4-flwr
+ai4flwr @ git+https://github.com/ai4os/ai4-flwr@develop
+flwr @ git+https://github.com/AI4EOSC/flower.git@credentials
+hvac
+jwt
+
