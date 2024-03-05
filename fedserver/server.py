@@ -69,7 +69,7 @@ elif FEDERATED_STRATEGY == "Adaptive Federated Optimization using Yogi":
         evaluate_metrics_aggregation_fn=wavg_metric,
     )
 
-# Include token interceptor
+# Include token interceptor (using Vault):
 token_interceptor = ai4flwr.auth.vault.VaultBearerTokenInterceptor(
     vault_addr="https://vault.services.fedcloud.eu:8200/",
     vault_token=VAULT_TOKEN,
