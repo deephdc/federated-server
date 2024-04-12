@@ -82,7 +82,7 @@ pipeline {
             when {
                 anyOf {
                    branch 'main'
-                   branch 'test'
+                   branch 'tokens'
                    buildingTag()
                }
             }
