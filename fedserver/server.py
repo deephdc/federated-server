@@ -5,6 +5,7 @@ import ai4flwr
 import flwr as fl
 from ai4flwr.auth import vault
 from flwr.common.logger import log
+from flwr.common import ndarrays_to_parameters
 
 INFO = logging.INFO
 
@@ -49,24 +50,34 @@ elif FEDERATED_STRATEGY == "FedProx Strategy":
         min_available_clients=FEDERATED_MIN_CLIENTS,
         min_fit_clients=FEDERATED_MIN_CLIENTS,
         evaluate_metrics_aggregation_fn=wavg_metric,
+        proximal_mu = 1
     )
 elif FEDERATED_STRATEGY == "Federated Optim Strategy":
+    model = tf.keras.models.load_model('initial_model.keras')
+    initial_parameters = ndarrays_to_parameters(model.get_weights())
     strategy = fl.server.strategy.FedOpt(
         min_available_clients=FEDERATED_MIN_CLIENTS,
         min_fit_clients=FEDERATED_MIN_CLIENTS,
         evaluate_metrics_aggregation_fn=wavg_metric,
+        initial_parameters = initial_parameters
     )
 elif FEDERATED_STRATEGY == "Federated Optimization with Adam":
+    model = tf.keras.models.load_model('initial_model.keras')
+    initial_parameters = ndarrays_to_parameters(model.get_weights())
     strategy = fl.server.strategy.FedAdam(
         min_available_clients=FEDERATED_MIN_CLIENTS,
         min_fit_clients=FEDERATED_MIN_CLIENTS,
         evaluate_metrics_aggregation_fn=wavg_metric,
+        initial_parameters = initial_parameters
     )
 elif FEDERATED_STRATEGY == "Adaptive Federated Optimization using Yogi":
+    model = tf.keras.models.load_model('initial_model.keras')
+    initial_parameters = ndarrays_to_parameters(model.get_weights())
     strategy = fl.server.strategy.FedYogi(
         min_available_clients=FEDERATED_MIN_CLIENTS,
         min_fit_clients=FEDERATED_MIN_CLIENTS,
         evaluate_metrics_aggregation_fn=wavg_metric,
+        initial_parameters = initial_parameters
     )
 
 # Include token interceptor (using Vault):
