@@ -4,6 +4,7 @@ import logging
 import ai4flwr
 import flwr as fl
 from ai4flwr.auth import vault
+import tensorflow as tf
 from flwr.common.logger import log
 from flwr.common import ndarrays_to_parameters
 
@@ -60,7 +61,7 @@ elif FEDERATED_STRATEGY == "Federated Averaging with Momentum":
         min_available_clients=FEDERATED_MIN_FIT_CLIENTS,
         min_fit_clients=FEDERATED_MIN_AVAILABLE_CLIENTS,
         evaluate_metrics_aggregation_fn=wavg_metric,
-        server_learning_rate=FEDAVGM_SERVER_FL
+        server_learning_rate=FEDAVGM_SERVER_FL,
         server_momentum=FEDAVGM_SERVER_MOMENTUM
     )
 elif FEDERATED_STRATEGY == "FedProx Strategy":
